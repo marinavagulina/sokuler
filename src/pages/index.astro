@@ -1,9 +1,135 @@
 ---
 import Base from '../layouts/Base.astro';
 ---
-<Base title="Сергей Сокулер — бас-гитара и контрабас">
-  <main>
-    <h1>Сергей Сокулер</h1>
-    <p>Сайт-архив в разработке. Каркас: Astro + Vue.</p>
-  </main>
+<Base title="Сергей Сокулер — бас-гитара и контрабас" theme="dark"
+      description="Бас-гитарист и контрабасист Сергей Сокулер: обучение с 2004 года, концерты, записи. Индивидуальные занятия у м. Сокольники.">
+  <section class="hero">
+    <div class="hero-text">
+      <p class="overline">бас-гитара · контрабас · педагог</p>
+      <h1>Сергей&nbsp;Сокулер<span class="italic script">играю. учу. сочиняю.</span></h1>
+      <div class="rule"></div>
+      <p class="lead">
+        <strong>Музыка, сцена и осознанное обучение:</strong> от первых азов — к пониманию, к которому хочется возвращаться.
+      </p>
+      <div class="cta">
+        <a class="btn btn-primary" href="mailto:info@sokuler.ru">Записаться на занятие</a>
+        <a class="btn btn-ghost" href="/koncerty/">Концерты</a>
+      </div>
+      <p class="subscribe">Вопросы и запись — <a href="mailto:info@sokuler.ru">почта</a> · <a href="https://vk.com/sokuler" target="_blank" rel="noopener noreferrer">ВКонтакте</a></p>
+    </div>
+    <div class="frame-wrap">
+      <figure class="frame">
+        <img src="/img/foto-hero.jpg" alt="Сергей Сокулер с контрабасом" width="600" height="750" />
+      </figure>
+    </div>
+  </section>
+
+  <nav class="go" aria-label="Разделы сайта">
+    <a class="go-card" href="/o-sebe/">
+      <span class="go-kicker">биография · образование</span>
+      <span class="go-title">О себе</span>
+      <span class="go-text">Игровой стаж с 1997-го, профессиональная сцена — с 2002-го: Ундервуд, Пётр Налич, оркестр Градский-холл.</span>
+      <span class="go-arrow" aria-hidden="true">→</span>
+    </a>
+    <a class="go-card" href="/obuchenie/">
+      <span class="go-kicker">формат · отзывы</span>
+      <span class="go-title">Ученикам</span>
+      <span class="go-text">Индивидуальные занятия один на один у м. Сокольники — бас-гитара и контрабас, педагогика с 2004 года.</span>
+      <span class="go-arrow" aria-hidden="true">→</span>
+    </a>
+    <a class="go-card" href="/koncerty/">
+      <span class="go-kicker">афиша · сейчас на сцене</span>
+      <span class="go-title">Концерты</span>
+      <span class="go-text">Ближайшие даты — на странице.</span>
+      <span class="go-arrow" aria-hidden="true">→</span>
+    </a>
+  </nav>
 </Base>
+
+<style>
+  /* ── Первый экран ── */
+  .hero {
+    max-width: 1280px; margin-inline: auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr);
+    gap: clamp(32px, 5vw, 80px);
+    align-items: center;
+    padding: clamp(28px, 5vh, 72px) var(--pad-x) clamp(40px, 6vh, 80px);
+  }
+  h1 {
+    font-size: var(--fs-h1);
+    line-height: 1.04;
+  }
+  h1 .italic {
+    display: block;
+    font-style: italic; font-weight: 400;
+    color: var(--bronze-light);
+    font-size: .52em;
+    margin-top: 10px;
+  }
+  .rule { width: 68px; height: 2px; background: var(--bronze); margin: 26px 0; }
+  .lead {
+    font-size: var(--fs-lead); font-weight: 300;
+    color: var(--text-dim); max-width: 46ch; line-height: 1.65;
+  }
+  .lead strong { color: var(--paper); font-weight: 500; }
+  .cta { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 36px; }
+  .subscribe { margin-top: 26px; font-size: 13px; color: var(--text-dim); }
+  .subscribe a { color: var(--bronze-light); text-decoration: none; border-bottom: 1px dashed rgba(212,180,131,.5); }
+
+  .frame-wrap { position: relative; }
+  .frame {
+    aspect-ratio: 4 / 5;
+    border: 1px solid rgba(212,180,131,.4);
+    box-shadow: 0 30px 80px rgba(0,0,0,.45), inset 0 0 0 1px rgba(0,0,0,.2);
+    position: relative;
+    overflow: hidden;
+  }
+  .frame::after {
+    content: ''; position: absolute; inset: 12px;
+    border: 1px solid rgba(212,180,131,.22); pointer-events: none;
+  }
+  .frame img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.95); }
+
+  /* ── Навигационные карточки (вместо полосы фактов) ── */
+  .go {
+    max-width: 1280px; margin-inline: auto;
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid rgba(212,180,131,.25);
+    padding: 30px var(--pad-x) 44px;
+    gap: 20px;
+  }
+  .go-card {
+    display: flex; flex-direction: column; gap: 8px;
+    color: inherit; text-decoration: none;
+    border: 1px solid rgba(212,180,131,.22);
+    padding: 20px 22px 22px;
+    transition: border-color .2s, background .2s, transform .2s;
+    position: relative;
+  }
+  .go-card:hover {
+    border-color: rgba(212,180,131,.55);
+    background: rgba(212,180,131,.05);
+    transform: translateY(-2px);
+  }
+  .go-kicker {
+    font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase;
+    color: #8A7F98;
+  }
+  .go-title {
+    font-family: var(--font-display);
+    font-size: 24px; color: var(--paper);
+  }
+  .go-text { font-size: 13.5px; line-height: 1.6; color: var(--text-dim); }
+  .go-arrow {
+    margin-top: auto; padding-top: 8px;
+    color: var(--bronze-light); font-size: 18px;
+    transition: transform .2s;
+  }
+  .go-card:hover .go-arrow { transform: translateX(4px); }
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; }
+    .go { grid-template-columns: 1fr; }
+  }
+</style>

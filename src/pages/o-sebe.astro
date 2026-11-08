@@ -1,0 +1,77 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="О себе — Сергей Сокулер" theme="light"
+      description="Сергей Сокулер: бас-гитарист и контрабасист. Игровой стаж с 1997 года, преподавание с 2004. Оркестр Градский-холл, мюзикл «Вальс-Бостон».">
+  <article class="about">
+    <p class="overline">О себе</p>
+    <h1>Сергей Сокулер</h1>
+    <p class="script tagline">бас-гитара · контрабас · педагог</p>
+
+    <div class="cols">
+      <div class="col-main">
+        <p class="lead">
+          Меня зовут Сергей Сокулер, я профессиональный бас-гитарист и контрабасист.
+          Игровой стаж с 1997 года, профессионально — с 2002-го, педагогическая
+          деятельность — с 2004 года.
+        </p>
+        <p>
+          Начинал с фортепиано в музыкальной школе имени Прокофьева, затем —
+          бас-гитара в рок-школе «Красный Химик», контрабас — в Государственном
+          музыкальном училище эстрадно-джазового искусства на Ордынке. Высшее
+          образование — МГУКИ (Московский государственный университет культуры
+          и искусств). Постановке смычка учился частно у академического
+          контрабасиста.
+        </p>
+        <p>
+          В разные годы играл с группой «Ундервуд», певцом Иракли, певицей
+          Софи Окран (экс-«Квартал»), выступал с Гариком Сукачевым и другими
+          артистами; участвовал в театральных проектах (Театр мюзикла, шоу
+          «Антигравитация»). Сейчас — басист оркестра Градский-холл, работаю
+          в мюзикле «Вальс-Бостон», сотрудничаю с Петром Наличем, есть два
+          собственных проекта.
+        </p>
+        <p>
+          Гастролировал за рубежом (Швейцария, Канада), несколько раз играл
+          с певицей Деборой Дэйвис (США). Стилистика: рок, поп, фанк, джаз,
+          латино-американская музыка.
+        </p>
+
+        <h2>Образование</h2>
+        <table>
+          <tr><td>Музыкальная школа № 1 им. С. Прокофьева, класс фортепиано</td><td>1990–1997</td></tr>
+          <tr><td>ГМУ эстрадно-джазового искусства (колледж) на Ордынке</td><td>2002–2006</td></tr>
+          <tr><td>Московский государственный университет культуры и искусств</td><td>2006–2011</td></tr>
+        </table>
+      </div>
+
+      <figure class="portrait">
+        <img src="/img/foto-about.jpg" alt="Сергей Сокулер с контрабасом на сцене" width="640" height="960" />
+        <figcaption>Контрабас — основной инструмент</figcaption>
+      </figure>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .about { padding: var(--sp-7) var(--pad-x) var(--sp-6); max-width: 1160px; margin-inline: auto; }
+  h1 { font-size: clamp(36px, 4.6vw, 60px); }
+  .tagline { color: var(--bronze); font-size: clamp(20px, 2.2vw, 28px); margin: 6px 0 40px; }
+  .cols { display: grid; grid-template-columns: 1.5fr 1fr; gap: clamp(28px, 5vw, 72px); align-items: start; }
+  .lead { font-size: var(--fs-lead); color: var(--text-main); font-weight: 300; line-height: 1.7; margin-bottom: 18px; }
+  .col-main p + p { margin-top: 14px; color: #453D52; }
+  h2 { font-size: var(--fs-h2); margin: 36px 0 16px; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  td { padding: 10px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+  td:first-child { color: #453D52; padding-right: 18px; }
+  td:last-child { white-space: nowrap; color: var(--bronze); font-weight: 500; }
+  .portrait { position: sticky; top: 24px; }
+  .portrait img {
+    aspect-ratio: 4 / 5; object-fit: cover; object-position: center 18%;
+    width: 100%; height: auto; /* height:auto сбивает натуральный height-атрибут */
+    max-width: 360px; display: block; margin-inline: auto;
+    border: 1px solid var(--line);
+  }
+  figcaption { margin-top: 12px; font-size: 12px; color: var(--text-muted); letter-spacing: .06em; text-align: center; }
+  @media (max-width: 900px) { .cols { grid-template-columns: 1fr; } .portrait { position: static; max-width: 420px; } }
+</style>
