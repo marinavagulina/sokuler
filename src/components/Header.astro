@@ -1,0 +1,74 @@
+---
+/**
+ * Шапка: эмблема «Имя на нотном стане» (инлайн-SVG из public/logo/).
+ * Тёмная тема → светлые штрихи лого (emblema-...-temnaya.svg = для тёмного фона),
+ * светлая тема → тёмные штрихи (emblema-...-svetlaya.svg). Размер 180×72.
+ * Меню из config.ts; на мобильных — компактно (гамбургер — отдельной задачей).
+ */
+import { MENU, SITE } from '../config';
+import { readFileSync } from 'node:fs';
+
+function loadLogo(file: string): string {
+  return readFileSync(new URL(`../../public/logo/${file}`, import.meta.url), 'utf-8')
+    .replace(/width="\d+(\.\d+)?"/, 'width="300"')
+    .replace(/height="\d+(\.\d+)?"/, 'height="120"');
+}
+const svgDark = loadLogo('emblema-stan-imya-temnaya.svg');   // для тёмного фона
+const svgLight = loadLogo('emblema-stan-imya-svetlaya.svg'); // для светлого фона
+
+const path = Astro.url.pathname;
+const isActive = (href: string) => path === href || (href !== '/' && path.startsWith(href));
+---
+<header class="nav">
+  <a href="/" class="logo-link" aria-label="На главную — Сергей Сокулер">
+    <span class="logo-dark" set:html={svgDark} />
+    <span class="logo-light" set:html={svgLight} />
+  </a>
+  <nav aria-label="Основная навигация">
+    <ul class="menu">
+      {MENU.map((item) => (
+        <li>
+          <a href={item.href} class:list={[{ active: isActive(item.href) }]}>{item.label}</a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+  <a href={`mailto:${SITE.email}`} class="nav-cta">Контакты</a>
+</header>
+
+<style>
+  .nav {
+    max-width: 1280px; margin-inline: auto;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    padding: 12px var(--pad-x);
+  }
+  .logo-link { display: block; line-height: 0; }
+  .logo-link :global(svg) { width: 300px; height: auto; display: block; }
+  @media (max-width: 480px) { .logo-link :global(svg) { width: 200px; } }
+  .logo-dark { display: block; }
+  .logo-light { display: none; }
+  /* селектор темы на body — вне scope компонента, нужен :global */
+  :global([data-theme='light']) .logo-dark { display: none; }
+  :global([data-theme='light']) .logo-light { display: block; }
+  .menu { display: flex; gap: clamp(14px, 2.4vw, 34px); list-style: none; }
+  .menu a {
+    color: var(--text-muted); text-decoration: none;
+    font-size: 12px; font-weight: 500;
+    letter-spacing: .14em; text-transform: uppercase;
+    transition: color .2s;
+  }
+  .menu a:hover { color: var(--bronze); }
+  .menu a.active { color: var(--bronze); }
+  .nav-cta {
+    color: var(--bronze); text-decoration: none;
+    font-size: 12px; letter-spacing: .14em; text-transform: uppercase;
+    border: 1px solid rgba(176, 141, 87, .45);
+    padding: 10px 18px; transition: all .2s;
+    white-space: nowrap;
+  }
+  .nav-cta:hover { background: rgba(176, 141, 87, .12); }
+  :global([data-theme='dark']) .menu a { color: var(--text-dim); }
+  :global([data-theme='dark']) .menu a:hover, :global([data-theme='dark']) .menu a.active { color: var(--bronze-light); }
+  :global([data-theme='dark']) .nav-cta { color: var(--bronze-light); border-color: rgba(212, 180, 131, .45); }
+  @media (max-width: 900px) { .menu { display: none; } }
+</style>
