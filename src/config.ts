@@ -19,10 +19,11 @@ export const SITE = {
   },
 } as const;
 
-/** Меню шапки — единое для всех страниц */
+/** Меню шапки — единое для всех страниц (и для мобильной панели) */
 export const MENU = [
   { label: 'Главная', href: '/' },
   { label: 'О себе', href: '/o-sebe/' },
   { label: 'Ученикам', href: '/obuchenie/' },
   { label: 'Концерты', href: '/koncerty/' },
+  { label: 'Контакты', href: '/kontakty/' },
 ] as const;

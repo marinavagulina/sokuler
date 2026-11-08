@@ -1,0 +1,51 @@
+---
+/**
+ * Пункты меню — ЕДИНАЯ структура для десктопной строки и мобильной панели.
+ * Единственный источник данных — MENU в src/config.ts (правки пунктов — только там).
+ * variant: 'desktop' — строка в шапке; 'mobile' — список в панели-шторке.
+ * Активный пункт подсвечивается по текущему пути.
+ */
+import { MENU } from '../config';
+
+interface Props { variant?: 'desktop' | 'mobile' }
+const { variant = 'desktop' } = Astro.props;
+
+const path = Astro.url.pathname;
+const isActive = (href: string) => path === href || (href !== '/' && path.startsWith(href));
+---
+{MENU.map((item) => (
+  <li>
+    <a href={item.href} class:list={['nav-link', `nav-link--${variant}`, { active: isActive(item.href) }]}>
+      {item.label}
+    </a>
+  </li>
+))}
+
+<style>
+  .nav-link {
+    display: block; text-decoration: none;
+    color: var(--text-muted);
+    transition: color .2s;
+  }
+  .nav-link:hover, .nav-link.active { color: var(--bronze); }
+
+  /* десктоп: компактная uppercase-строка */
+  .nav-link--desktop {
+    font-size: 12px; font-weight: 500;
+    letter-spacing: .14em; text-transform: uppercase;
+  }
+
+  /* мобильный: крупная строка с разделителями */
+  .nav-link--mobile {
+    padding: 13px 0;
+    font-size: 15px; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--ink);
+    border-bottom: 1px solid var(--line);
+  }
+
+  /* тема на body — вне scope, нужен :global */
+  :global([data-theme='dark']) .nav-link { color: var(--text-dim); }
+  :global([data-theme='dark']) .nav-link:hover,
+  :global([data-theme='dark']) .nav-link.active { color: var(--bronze-light); }
+  :global([data-theme='dark']) .nav-link--mobile { color: var(--text-dim); }
+</style>

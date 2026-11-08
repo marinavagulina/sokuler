@@ -2,11 +2,15 @@
 /**
  * Шапка: эмблема «Имя на нотном стане» (инлайн-SVG из public/logo/).
  * Тёмная тема → светлые штрихи лого (emblema-...-temnaya.svg = для тёмного фона),
- * светлая тема → тёмные штрихи (emblema-...-svetlaya.svg). Размер 180×72.
- * Меню из config.ts; на мобильных — компактно (гамбургер — отдельной задачей).
+ * светлая тема → тёмные штрихи (emblema-...-svetlaya.svg). Размер 300×120 (CSS).
+ * Пункты меню — единый NavList (данные из config.ts). «Контакты» — обычный
+ * пункт меню, ведёт на /kontakty/. На экранах ≤900px — гамбургер: панель-шторка
+ * сверху; закрытие — крестик, клик по ссылке, клик по фону или Esc.
+ * С ClientRouter скрипт выполняется один раз → слушатели делегированы на document.
  */
-import { MENU, SITE } from '../config';
+import { SITE } from '../config';
 import { readFileSync } from 'node:fs';
+import NavList from './NavList.astro';
 
 function loadLogo(file: string): string {
   return readFileSync(new URL(`../../public/logo/${file}`, import.meta.url), 'utf-8')
@@ -15,9 +19,6 @@ function loadLogo(file: string): string {
 }
 const svgDark = loadLogo('emblema-stan-imya-temnaya.svg');   // для тёмного фона
 const svgLight = loadLogo('emblema-stan-imya-svetlaya.svg'); // для светлого фона
-
-const path = Astro.url.pathname;
-const isActive = (href: string) => path === href || (href !== '/' && path.startsWith(href));
 ---
 <header class="nav">
   <a href="/" class="logo-link" aria-label="На главную — Сергей Сокулер">
@@ -25,16 +26,17 @@ const isActive = (href: string) => path === href || (href !== '/' && path.starts
     <span class="logo-light" set:html={svgLight} />
   </a>
   <nav aria-label="Основная навигация">
-    <ul class="menu">
-      {MENU.map((item) => (
-        <li>
-          <a href={item.href} class:list={[{ active: isActive(item.href) }]}>{item.label}</a>
-        </li>
-      ))}
-    </ul>
+    <ul class="menu"><NavList variant="desktop" /></ul>
   </nav>
-  <a href={`mailto:${SITE.email}`} class="nav-cta">Контакты</a>
+  <button class="burger" aria-label="Открыть меню" aria-expanded="false" aria-controls="mobile-menu">
+    <span></span><span></span><span></span>
+  </button>
 </header>
+<div class="backdrop" data-close></div>
+<div class="mobile" id="mobile-menu" role="dialog" aria-modal="true" aria-label="Меню">
+  <button class="close" aria-label="Закрыть меню" data-close>×</button>
+  <ul><NavList variant="mobile" /></ul>
+</div>
 
 <style>
   .nav {
@@ -51,24 +53,75 @@ const isActive = (href: string) => path === href || (href !== '/' && path.starts
   :global([data-theme='light']) .logo-dark { display: none; }
   :global([data-theme='light']) .logo-light { display: block; }
   .menu { display: flex; gap: clamp(14px, 2.4vw, 34px); list-style: none; }
-  .menu a {
-    color: var(--text-muted); text-decoration: none;
-    font-size: 12px; font-weight: 500;
-    letter-spacing: .14em; text-transform: uppercase;
-    transition: color .2s;
+
+  /* ── Гамбургер (только ≤900px) ── */
+  .burger {
+    display: none;
+    flex-direction: column; justify-content: center; gap: 5px;
+    width: 42px; height: 42px; padding: 9px;
+    background: none; border: 1px solid rgba(176,141,87,.45);
+    color: var(--bronze); cursor: pointer;
   }
-  .menu a:hover { color: var(--bronze); }
-  .menu a.active { color: var(--bronze); }
-  .nav-cta {
-    color: var(--bronze); text-decoration: none;
-    font-size: 12px; letter-spacing: .14em; text-transform: uppercase;
-    border: 1px solid rgba(176, 141, 87, .45);
-    padding: 10px 18px; transition: all .2s;
-    white-space: nowrap;
+  .burger span { display: block; height: 2px; width: 100%; background: currentColor; }
+  :global([data-theme='dark']) .burger { color: var(--bronze-light); border-color: rgba(212, 180, 131, .45); }
+
+  /* ── Мобильная панель ── */
+  .backdrop, .mobile { position: fixed; }
+  .backdrop {
+    inset: 0;
+    background: rgba(20, 12, 32, .55);
+    opacity: 0; visibility: hidden;
+    transition: opacity .25s;
   }
-  .nav-cta:hover { background: rgba(176, 141, 87, .12); }
-  :global([data-theme='dark']) .menu a { color: var(--text-dim); }
-  :global([data-theme='dark']) .menu a:hover, :global([data-theme='dark']) .menu a.active { color: var(--bronze-light); }
-  :global([data-theme='dark']) .nav-cta { color: var(--bronze-light); border-color: rgba(212, 180, 131, .45); }
-  @media (max-width: 900px) { .menu { display: none; } }
+  .mobile {
+    inset: 0 0 auto 0; /* шторка сверху во всю ширину */
+    background: var(--paper);
+    transform: translateY(-100%);
+    transition: transform .28s ease;
+    padding: 14px var(--pad-x) 26px;
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .mobile ul { list-style: none; }
+  .close {
+    align-self: end;
+    width: 42px; height: 42px;
+    background: none; border: 1px solid rgba(176,141,87,.45);
+    color: var(--bronze); font-size: 22px; line-height: 1; cursor: pointer;
+  }
+  :global([data-theme='dark']) .mobile { background: #241431; }
+  :global([data-theme='dark']) .mobile .close { color: var(--bronze-light); border-color: rgba(212, 180, 131, .45); }
+
+  /* Состояние «открыто»: класс на body */
+  :global(body.menu-open) .backdrop { opacity: 1; visibility: visible; }
+  :global(body.menu-open) .mobile { transform: translateY(0); }
+  :global(body.menu-open) { overflow: hidden; } /* блокируем скролл фона */
+
+  @media (max-width: 900px) {
+    .menu { display: none; }
+    .burger { display: flex; }
+  }
 </style>
+
+<script>
+  // Гамбургер. Делегирование на document: при ClientRouter скрипт живёт один раз,
+  // а ссылки/панель пересоздаются при переходах — селекторы ищем на момент клика.
+  const setOpen = (open: boolean) => {
+    document.body.classList.toggle('menu-open', open);
+    document.querySelector('.burger')?.setAttribute('aria-expanded', String(open));
+  };
+
+  document.addEventListener('click', (e) => {
+    const t = e.target as HTMLElement;
+    if (t.closest('.burger')) { setOpen(!document.body.classList.contains('menu-open')); return; }
+    if (t.closest('[data-close]')) { setOpen(false); return; }
+    // клик по ссылке внутри мобильной панели — закрыть и дать перейти
+    if (t.closest('.mobile') && t.closest('a')) setOpen(false);
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') setOpen(false);
+  });
+
+  // после клиентского перехода панель точно закрыта
+  document.addEventListener('astro:page-load', () => setOpen(false));
+</script>
