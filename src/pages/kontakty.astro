@@ -1,0 +1,66 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE } from '../config';
+---
+<Base title="Контакты — Сергей Сокулер" theme="light"
+      description="Связаться с Сергеем Сокулером: запись на занятия бас-гитарой и контрабасом, концерты, сотрудничество. Email и соцсети.">
+  <article class="contacts">
+    <p class="overline">Контакты</p>
+    <h1>Связаться <span class="amp script">со</span> мной</h1>
+    <p class="lead">
+      Запись на занятия, вопросы по обучению, приглашения на концерты
+      и студийную работу — пишите, отвечаю сам.
+    </p>
+
+    <div class="rows">
+      <section class="row">
+        <h2>Почта</h2>
+        <p class="big">
+          <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+        </p>
+        <p class="muted">Запись на занятие и все вопросы — самый быстрый канал.</p>
+      </section>
+
+      <section class="row">
+        <h2>Соцсети</h2>
+        <p class="big">
+          <a href={SITE.socials.vk.url} target="_blank" rel="noopener noreferrer">ВКонтакте</a>
+          <span class="sep">·</span>
+          <a href={SITE.socials.youtube.url} target="_blank" rel="noopener noreferrer">YouTube</a>
+        </p>
+        <p class="muted">Единое имя аккаунтов — «{SITE.socials.vk.display}».</p>
+      </section>
+
+      <section class="row">
+        <h2>Класс</h2>
+        <p class="big">м. Сокольники, 5 минут пешком</p>
+        <p class="muted">Точный адрес сообщаю при записи — класс с инструментами и аппаратурой на месте.</p>
+      </section>
+    </div>
+
+    <div class="cta">
+      <a class="btn btn-primary" href={`mailto:${SITE.email}`}>Написать письмо</a>
+      <a class="btn btn-ghost" href="/obuchenie/">Как устроены занятия</a>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .contacts { padding: var(--sp-7) var(--pad-x) var(--sp-6); max-width: 1160px; margin-inline: auto; }
+  h1 { font-size: clamp(34px, 4.4vw, 56px); max-width: 16ch; }
+  .amp { color: var(--bronze); font-weight: 400; }
+  .lead { font-size: var(--fs-lead); color: #453D52; font-weight: 300; line-height: 1.7; max-width: 54ch; margin: 18px 0 40px; }
+
+  .rows { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; max-width: 980px; }
+  .row { border: 1px solid var(--line); padding: 24px 22px; background: rgba(255,255,255,.55); }
+  .row h2 { font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: #8A7F98; margin-bottom: 14px; }
+  .row .big { font-family: var(--font-display); font-size: 20px; line-height: 1.5; }
+  .row .big a { color: var(--ink); text-decoration: none; border-bottom: 1px solid rgba(176,141,87,.4); transition: color .2s, border-color .2s; }
+  .row .big a:hover { color: var(--bronze); border-color: var(--bronze); }
+  .row .sep { color: #8A7F98; padding: 0 6px; }
+  .row .muted { margin-top: 10px; font-size: 13px; line-height: 1.6; color: #8A7F98; }
+
+  .cta { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 46px; }
+
+  @media (max-width: 900px) { .rows { grid-template-columns: 1fr; } }
+</style>
