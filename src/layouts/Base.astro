@@ -1,6 +1,7 @@
 ---
 import '../styles/tokens.css';
 import '../styles/base.css';
+import { ClientRouter } from 'astro:transitions';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 
@@ -21,6 +22,7 @@ const { title, description = 'Бас-гитарист и контрабасис�
     <meta name="generator" content={Astro.generator} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
+    <ClientRouter />
   </head>
   <body data-theme={theme}>
     <Header />

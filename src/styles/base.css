@@ -133,7 +133,15 @@ a { color: inherit; }
   padding: 16px 30px; transition: all .2s;
 }
 .btn-primary { background: var(--bronze); color: #1E1230; }
-.btn-primary:hover { background: var(--bronze-light); transform: translateY(-1px); }
+
+/* ── Плавные переходы между страницами (ClientRouter) ── */
+::view-transition-old(root) { animation: vt-fade-out .18s ease-in both; }
+::view-transition-new(root) { animation: vt-fade-in .22s ease-out both; }
+@keyframes vt-fade-out { to { opacity: 0; } }
+@keyframes vt-fade-in { from { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
+}.btn-primary:hover { background: var(--bronze-light); transform: translateY(-1px); }
 .btn-ghost { border: 1px solid rgba(212, 180, 131, .5); color: var(--bronze-light); text-decoration: none; }
 .btn-ghost:hover { border-color: var(--bronze-light); background: rgba(212, 180, 131, .08); }
 
