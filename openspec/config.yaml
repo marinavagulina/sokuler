@@ -4,10 +4,19 @@ schema: spec-driven
 # Add only constraints that should guide OpenSpec artifacts and workflows.
 # Include constraints an agent cannot infer by reading the code.
 # Keep general project documentation and discoverable codebase facts out.
-# Example:
-#   context: |
-#     Designs and tasks must cover Windows, macOS, and Linux
-#     Write all artifacts in Spanish
+context: |
+  Гибридный режим работы (согласовано с Мариной, 08.11.2026):
+  - OpenSpec — только для КРУПНЫХ изменений: новые подсистемы и разделы,
+    где ошибка в требованиях дорога (каталог уроков, плеер, формы записи,
+    кабинет ученика, структура разделов).
+  - Мелочи (тексты, отступы, цвета-поправки, пункты меню) — фиксировать
+    НЕ в спеках: делаем напрямую и коммитим; главный документ проекта —
+    «Сайт — концепция и ТЗ.md» (D:\Marina\Work\Maksimov-sokuler\).
+  - В спеках фиксируются: как сайт работает (поведение, сценарии) и
+    базовые настройки (палитра, типографика, структура) — но не пиксели
+    и не формулировки-плейсхолдеры.
+  - Артефакты держать короткими: proposal ≤ 1 страницы, требования без
+    технической реализации (она в design.md).
 
 # Per-artifact rules (optional)
 # Add custom rules for specific artifacts.
