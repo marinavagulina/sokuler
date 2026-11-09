@@ -13,6 +13,11 @@ const personLd = {
   image: `${SITE.url}/img/foto-hero.jpg`,
   sameAs: [SITE.socials.vk.url, SITE.socials.youtube.url],
 };
+
+// Ближайшие концерты на главной — из Google-таблицы афиши (до 3 штук).
+// Таблица не подключена или пуста — блок на главной не выводится.
+import { getConcerts } from '../data/concerts';
+const upcoming = (await getConcerts()).slice(0, 3);
 ---
 <Base title="Сергей Сокулер — бас-гитара и контрабас" theme="dark"
       description="Официальный сайт бас-гитариста и контрабасиста Сергея Сокулера: уроки бас-гитары в Москве, концерты и записи. Запишитесь на занятие у м. Сокольники.">
@@ -37,6 +42,29 @@ const personLd = {
       </figure>
     </div>
   </section>
+
+  {upcoming.length > 0 && (
+    <section class="next" aria-label="Ближайшие концерты">
+      <div class="next-head">
+        <p class="overline">ближайшие концерты</p>
+        <a class="all" href="/koncerty/">вся афиша →</a>
+      </div>
+      <ul class="next-list">
+        {upcoming.map((c) => (
+          <li class="next-item">
+            <span class="next-date">{c.dateText}</span>
+            <span class="next-what">
+              {c.what && <b>{c.what}</b>}
+              <span class="next-place">{[c.venue, c.city].filter(Boolean).join(' · ')}</span>
+            </span>
+            {c.ticketsUrl && (
+              <a class="next-tickets" href={c.ticketsUrl} target="_blank" rel="noopener noreferrer">билеты →</a>
+            )}
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
 
   <nav class="go" aria-label="Разделы сайта">
     <a class="go-card" href="/o-sebe/">
@@ -90,6 +118,46 @@ const personLd = {
   .cta { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 36px; }
   .subscribe { margin-top: 26px; font-size: 13px; color: var(--text-dim); }
   .subscribe a { color: var(--bronze-light); text-decoration: none; border-bottom: 1px dashed rgba(212,180,131,.5); }
+
+  /* ── Ближайшие концерты ── */
+  .next {
+    max-width: 1280px; margin-inline: auto;
+    padding: 34px var(--pad-x) 10px;
+  }
+  .next-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; }
+  .next .overline { margin-bottom: 0; }
+  .all {
+    font-size: 13px; color: var(--bronze-light); text-decoration: none;
+    border-bottom: 1px dashed rgba(212,180,131,.5); white-space: nowrap;
+  }
+  .all:hover { color: var(--paper); }
+  .next-list { list-style: none; margin-top: 18px; }
+  .next-item {
+    display: flex; align-items: baseline; gap: 20px;
+    padding: 13px 0;
+    border-bottom: 1px solid rgba(212,180,131,.16);
+  }
+  .next-item:first-child { border-top: 1px solid rgba(212,180,131,.16); }
+  .next-date {
+    font-family: var(--font-display); font-weight: 600;
+    font-size: 17px; color: var(--bronze-light);
+    min-width: 100px; white-space: nowrap;
+  }
+  .next-what { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+  .next-what b { font-size: 15.5px; color: var(--paper); font-weight: 600; }
+  .next-place { font-size: 13px; color: var(--text-dim); }
+  .next-tickets {
+    margin-left: auto; white-space: nowrap;
+    color: var(--bronze-light); text-decoration: none;
+    border-bottom: 1px dashed rgba(212,180,131,.5);
+    font-size: 13.5px;
+  }
+  .next-tickets:hover { color: var(--paper); border-color: var(--paper); }
+
+  @media (max-width: 640px) {
+    .next-item { flex-wrap: wrap; gap: 6px 14px; }
+    .next-tickets { margin-left: 0; }
+  }
 
   .frame-wrap { position: relative; }
   .frame {
