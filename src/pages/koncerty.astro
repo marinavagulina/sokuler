@@ -1,13 +1,40 @@
 ---
 import Base from '../layouts/Base.astro';
 import { SITE } from '../config';
+import { getConcerts } from '../data/concerts';
+
+// Афиша подгружается при сборке из Google-таблицы (CONCERTS_SHEET_URL).
+// Если таблица не подключена/пуста/все концерты в прошлом — заглушка.
+const concerts = await getConcerts();
+const hasEvents = concerts.length > 0;
 ---
 <Base title="Концерты — Сергей Сокулер" theme="dark"
       description="Концерты с участием Сергея Сокулера — бас-гитариста оркестра Градский-холл и мюзикла «Вальс-Бостон». Расписание выступлений: Ticketland и ВКонтакте.">
   <article class="stub">
     <p class="overline">афиша</p>
     <h1>Концерты</h1>
-    <p class="script hint">здесь появится афиша</p>
+
+    {hasEvents ? (
+      <ul class="events">
+        {concerts.map((c) => (
+          <li class="event">
+            <span class="date">{c.dateText}</span>
+            <span class="what">
+              {c.what && <b>{c.what}</b>}
+              <span class="place">
+                {[c.venue, c.city].filter(Boolean).join(' · ')}
+              </span>
+            </span>
+            {c.ticketsUrl && (
+              <a class="tickets" href={c.ticketsUrl} target="_blank" rel="noopener noreferrer">билеты →</a>
+            )}
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p class="script hint">здесь появится афиша</p>
+    )}
+
     <p class="note">
       Ближайшие концерты — с оркестром Градский-холл, в мюзикле «Вальс-Бостон»
       и на своих проектах. Даты и билеты уже сейчас — на
@@ -23,4 +50,33 @@ import { SITE } from '../config';
   .hint { color: var(--bronze-light); font-size: clamp(18px, 2vw, 24px); margin: 12px 0 24px; }
   .note { color: var(--text-dim); font-size: 14px; }
   .note a { color: var(--bronze-light); }
+
+  /* список концертов */
+  .events { list-style: none; max-width: 820px; margin: 8px 0 30px; }
+  .event {
+    display: flex; align-items: baseline; gap: 22px;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(212,180,131,.18);
+  }
+  .event:first-child { border-top: 1px solid rgba(212,180,131,.18); }
+  .date {
+    font-family: var(--font-display); font-weight: 600;
+    font-size: 19px; color: var(--bronze-light);
+    min-width: 108px; white-space: nowrap;
+  }
+  .what { display: flex; flex-direction: column; gap: 4px; }
+  .what b { font-size: 17px; color: var(--paper); font-weight: 600; }
+  .place { font-size: 13.5px; color: var(--text-dim); }
+  .tickets {
+    margin-left: auto; white-space: nowrap;
+    color: var(--bronze-light); text-decoration: none;
+    border-bottom: 1px dashed rgba(212,180,131,.5);
+    font-size: 14px;
+  }
+  .tickets:hover { color: var(--paper); border-color: var(--paper); }
+
+  @media (max-width: 640px) {
+    .event { flex-wrap: wrap; gap: 8px 16px; }
+    .tickets { margin-left: 0; }
+  }
 </style>

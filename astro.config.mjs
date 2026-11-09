@@ -12,16 +12,6 @@ export default defineConfig({
   // Отсюда официальная sitemap-интеграция берёт адрес страниц.
   site: 'https://sokuler.ru',
   integrations: [vue(), sitemap()],
-  // Dev-сервер: пускаем внешние хосты туннелей (cloudflared/localtunnel),
-  // чтобы показывать сайт по публичной ссылке. На build не влияет.
-  server: {
-    host: '127.0.0.1',
-    allowedHosts: [
-      '.trycloudflare.com',
-      '.loca.lt',
-    ],
-  },
-  // GitHub Pages: сборка в dist, базовый путь — корень (домен sokuler.ru).
-  // Action .github/workflows/deploy.yml собирает и публикует при пуше в main.
+  // GitHub Pages: Action .github/workflows/deploy.yml собирает и публикует при пуше в main.
   trailingSlash: 'ignore',
 });

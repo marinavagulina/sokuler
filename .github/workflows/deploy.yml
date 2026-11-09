@@ -7,6 +7,10 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  # Афиша Сергея живёт в Google-таблице; пересобираем сайт ежечасно,
+  # чтобы новые концерты появлялись без пушей в репозиторий.
+  schedule:
+    - cron: '0 * * * *'
 
 permissions:
   contents: read
@@ -35,8 +39,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # URL Google-таблицы с афишей (хранится в секретах репозитория).
+      # Если секрет не задан, сайт собирается с заглушкой афиши.
       - name: Build with Astro
         run: npm run build
+        env:
+          CONCERTS_SHEET_URL: ${{ secrets.CONCERTS_SHEET_URL }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
