@@ -1,8 +1,22 @@
 ---
 import Base from '../layouts/Base.astro';
+import { SITE } from '../config';
+
+// schema.org JSON-LD: визитка Person для поисковиков (главная страница).
+// sameAs — ПЛЕЙСХОЛДЕРЫ соцсетей из config.ts, заменить реальными адресами.
+const personLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Сергей Сокулер',
+  jobTitle: 'Бас-гитарист, контрабасист, педагог',
+  url: `${SITE.url}/`,
+  image: `${SITE.url}/img/foto-hero.jpg`,
+  sameAs: [SITE.socials.vk.url, SITE.socials.youtube.url],
+};
 ---
 <Base title="Сергей Сокулер — бас-гитара и контрабас" theme="dark"
-      description="Бас-гитарист и контрабасист Сергей Сокулер: обучение с 2004 года, концерты, записи. Индивидуальные занятия у м. Сокольники.">
+      description="Официальный сайт бас-гитариста и контрабасиста Сергея Сокулера: уроки бас-гитары в Москве, концерты и записи. Запишитесь на занятие у м. Сокольники.">
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(personLd)} />
   <section class="hero">
     <div class="hero-text">
       <p class="overline">бас-гитара · контрабас · педагог</p>
@@ -32,7 +46,7 @@ import Base from '../layouts/Base.astro';
       <span class="go-arrow" aria-hidden="true">→</span>
     </a>
     <a class="go-card" href="/obuchenie/">
-      <span class="go-kicker">формат · отзывы</span>
+      <span class="go-kicker">обучение · отзывы</span>
       <span class="go-title">Ученикам</span>
       <span class="go-text">Индивидуальные занятия один на один у м. Сокольники — бас-гитара и контрабас, педагогика с 2004 года.</span>
       <span class="go-arrow" aria-hidden="true">→</span>
@@ -40,7 +54,7 @@ import Base from '../layouts/Base.astro';
     <a class="go-card" href="/koncerty/">
       <span class="go-kicker">афиша · сейчас на сцене</span>
       <span class="go-title">Концерты</span>
-      <span class="go-text">Ближайшие даты — на странице.</span>
+      <span class="go-text">Ближайшие даты моих выступлений.</span>
       <span class="go-arrow" aria-hidden="true">→</span>
     </a>
   </nav>

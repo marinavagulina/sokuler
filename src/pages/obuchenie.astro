@@ -1,8 +1,28 @@
 ---
 import Base from '../layouts/Base.astro';
+import { SITE } from '../config';
+
+// schema.org JSON-LD: Service — обучение бас-гитаре и контрабасу.
+// Цену НЕ публикуем (нет согласия владельца), поэтому offers не указываем.
+const serviceLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Индивидуальные занятия бас-гитарой и контрабасом',
+  serviceType: 'Уроки бас-гитары и контрабаса',
+  url: `${SITE.url}/obuchenie/`,
+  description: 'Индивидуальные уроки бас-гитары и контрабаса в Москве, у м. Сокольники: педагог с 2004 года, стили рок, поп, фанк, джаз, подготовка в музыкальные училища и вузы.',
+  provider: {
+    '@type': 'Person',
+    name: 'Сергей Сокулер',
+    jobTitle: 'Бас-гитарист, контрабасист, педагог',
+    url: `${SITE.url}/`,
+  },
+  areaServed: { '@type': 'City', name: 'Москва' },
+};
 ---
-<Base title="Ученикам — занятия бас-гитарой и контрабасом — Сергей Сокулер" theme="light"
-      description="Занятия бас-гитарой и контрабасом у м. Сокольники: индивидуально, 45–50 минут. Рок, поп, фанк, джаз. Подготовка в музыкальные училища и ВУЗы.">
+<Base title="Уроки бас-гитары и контрабаса в Москве — Сергей Сокулер" theme="light"
+      description="Уроки бас-гитары и контрабаса в Москве у м. Сокольники: педагог с 2004 года, рок, поп, фанк, джаз, подготовка в училища и вузы. Запишитесь на занятие!">
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(serviceLd)} />
   <article class="teach">
     <p class="overline">Ученикам</p>
     <h1>Занятия бас-гитарой <span class="amp script">и</span> контрабасом</h1>
@@ -133,7 +153,7 @@ import Base from '../layouts/Base.astro';
           <figcaption><b>Денис</b> · бас-гитара · ноябрь 2022</figcaption>
         </figure>
       </div>
-      <p class="note">Отзывы опубликованы с Профи.ру.</p>
+      <p class="note">Отзывы — с <a href="https://profi.ru/profile/SokulerSV/" target="_blank" rel="noopener noreferrer">profi.ru</a>, оценка профиля — ★5,0.</p>
     </section>
 
     <div class="cta">
@@ -201,6 +221,8 @@ import Base from '../layouts/Base.astro';
   .review figcaption { font-size: 12px; letter-spacing: .08em; color: #8A7F98; margin-top: auto; }
   .review figcaption b { color: var(--bronze); font-weight: 600; }
   .note { margin-top: 14px; font-size: 12px; color: #8A7F98; }
+  .note a { color: #8A7F98; text-decoration: underline; }
+  .note a:hover { color: var(--bronze); }
 
   .cta { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 46px; }
 

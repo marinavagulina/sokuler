@@ -1,9 +1,26 @@
 ---
 import Base from '../layouts/Base.astro';
 import { SITE } from '../config';
+
+// schema.org JSON-LD: ContactPage — страница контактов.
+// email в разметку не включён — в config.ts пока ПЛЕЙСХОЛДЕР.
+const contactLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ContactPage',
+  name: 'Контакты — Сергей Сокулер',
+  url: `${SITE.url}/kontakty/`,
+  description: 'Связаться с басистом Сергеем Сокулером: запись на уроки, концерты, студийная работа.',
+  mainEntity: {
+    '@type': 'Person',
+    name: 'Сергей Сокулер',
+    jobTitle: 'Бас-гитарист, контрабасист, педагог',
+    sameAs: [SITE.socials.vk.url, SITE.socials.youtube.url], // ПЛЕЙСХОЛДЕРЫ соцсетей
+  },
+};
 ---
 <Base title="Контакты — Сергей Сокулер" theme="light"
-      description="Связаться с Сергеем Сокулером: запись на занятия бас-гитарой и контрабасом, концерты, сотрудничество. Email и соцсети.">
+      description="Связаться с басистом Сергеем Сокулером: запись на уроки бас-гитары и контрабаса у м. Сокольники, концерты, студийная работа. Email и соцсети.">
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(contactLd)} />
   <article class="contacts">
     <p class="overline">Контакты</p>
     <h1>Связаться <span class="amp script">со</span> мной</h1>
