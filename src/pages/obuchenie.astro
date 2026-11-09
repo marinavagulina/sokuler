@@ -169,17 +169,31 @@ const serviceLd = {
   .amp { color: var(--bronze); font-weight: 400; }
   .lead { font-size: var(--fs-lead); color: #453D52; font-weight: 300; line-height: 1.7; max-width: 60ch; margin: 18px 0 30px; }
 
-  /* оглавление */
-  .toc { display: flex; flex-wrap: wrap; gap: 10px 26px; margin-bottom: 54px; }
+  /* оглавление — липкое: при скролле прилипает к верху и всегда под рукой.
+     Компактное: ссылки собраны слева, справа — воздух */
+  .toc {
+    position: sticky; top: 0; z-index: 40;
+    display: flex; flex-wrap: wrap; gap: 10px 26px;
+    width: fit-content; max-width: 100%;
+    margin: 0 0 54px;
+    padding: 12px 22px 12px;
+    background: rgba(253, 252, 250, .92);
+    backdrop-filter: blur(6px);
+    border: 1px solid var(--line);
+    border-radius: 0 0 10px 10px;
+    scroll-margin-top: 0;
+  }
   .toc a {
     font-size: 12.5px; letter-spacing: .1em; text-transform: uppercase;
     color: var(--violet-mid); text-decoration: none;
     border-bottom: 1px solid transparent; padding-bottom: 2px;
+    white-space: nowrap;
   }
   .toc a:hover { color: var(--bronze); border-color: rgba(176,141,87,.5); }
+  .toc a.active { color: var(--bronze); border-color: rgba(176,141,87,.6); }
 
   /* блоки */
-  .block { margin-bottom: 58px; scroll-margin-top: 20px; }
+  .block { margin-bottom: 58px; scroll-margin-top: 64px; }
   .block > h2 { font-size: var(--fs-h2); margin-bottom: 22px; }
 
   /* как проходит работа */
@@ -232,5 +246,50 @@ const serviceLd = {
     .get { columns: 1; }
     .grid3 { grid-template-columns: 1fr; }
     .reviews { grid-template-columns: 1fr; }
+    .toc { gap: 8px 18px; }
   }
 </style>
+
+<script>
+  // Scrollspy: подсветка активного раздела в липком оглавлении.
+  // Наблюдатели навешиваются заново на astro:page-load (совместимо с ClientRouter).
+  function initSpy() {
+    const links = Array.from(document.querySelectorAll<HTMLAnchorElement>('.toc a'));
+    if (!links.length) return;
+    const targets = links
+      .map((a) => document.getElementById((a.getAttribute('href') || '').slice(1)))
+      .filter((el): el is HTMLElement => !!el);
+
+    const setActive = () => {
+      const line = window.innerHeight * 0.28; // раздел активен, когда заголовок выше этой линии
+      let current = targets[0];
+      for (const t of targets) {
+        if (t.getBoundingClientRect().top <= line) current = t;
+      }
+      // внизу страницы активен последний раздел
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 4) {
+        current = targets[targets.length - 1];
+      }
+      for (const a of links) {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + current.id);
+      }
+    };
+
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => { setActive(); ticking = false; });
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    document.addEventListener('astro:before-swap', () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    }, { once: true });
+    setActive();
+  }
+  document.addEventListener('astro:page-load', initSpy);
+  if (document.readyState === 'complete') initSpy();
+</script>
