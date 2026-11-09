@@ -200,6 +200,26 @@
 - [ ] N.2 Уточнить у Сергея: email, адрес YouTube, цену (в контенте есть 2000 ₽ — не публикуем без согласия), согласие на упоминание артистов/коллективов. — ВК получен (см. S.9в).
 - [ ] N.3 Обновить спеку home-page при архивации: подписка → прямые контакты (согласовано с Мариной).
 
+## Деплой (09.11.2026)
+
+- [x] D.1 GitHub Pages настроен: workflow
+      `.github/workflows/deploy.yml` (сборка при пуше в main,
+      actions/deploy-pages), Pages включён (build_type=workflow),
+      ветки приведены к одной main (master удалён на GitHub).
+      Первый прогон — success (build+deploy);
+      https://marinavagulina.github.io/sokuler/ — HTTP 200.
+- [x] D.2 Домен: public/CNAME (sokuler.ru) + поле Custom domain в
+      настройках Pages (cname=sokuler.ru). DEPLOY.md в корне —
+      полная инструкция по DNS (nic.ru): 4 A-записи 185.199.108–111.153,
+      CNAME www → marinavagulina.github.io, старые A-записи парковки
+      (109.70.26.37, 194.85.61.76) удалить.
+      ⏳ ЖДЁТ МАРИНУ: сменить DNS-записи в личном кабинете nic.ru.
+      После смены GitHub выпустит сертификат, включить Enforce HTTPS.
+      До переключения DNS: https://marinavagulina.github.io/sokuler/
+      открывается, но без стилей (пути рассчитаны на корень домена);
+      превью по туннелю https://sokuler.loca.lt (с IP-подтверждением
+      217.150.201.137) — полностью рабочий.
+
 ## Workflow follow-up
 
 - Архивировать change после утверждения Марины (`/opsx-archive`) — требования вольются в `openspec/specs/`.
