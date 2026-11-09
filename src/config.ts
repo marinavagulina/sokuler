@@ -13,7 +13,7 @@ export const SITE = {
   email: 'info@sokuler.ru',
   socials: {
     vk: {
-      url: 'https://vk.com/sokuler', // ПЛЕЙСХОЛДЕР
+      url: 'https://vk.ru/id180725233',
       display: 'Басист Сергей Сокулер',
     },
     youtube: {

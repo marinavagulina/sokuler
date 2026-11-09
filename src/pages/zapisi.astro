@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import { SITE } from '../config';
 ---
 <Base title="Записи — Сергей Сокулер" theme="dark"
       description="Записи и выступления Сергея Сокулера: аудио и видео бас-гитариста и контрабасиста с концертов и студии. Слушайте и смотрите на YouTube и во ВКонтакте.">
@@ -11,7 +12,7 @@ import Base from '../layouts/Base.astro';
       Отбираю студийные и концертные записи для этого раздела. Слушать и смотреть
       уже сейчас — на
       <a href="https://youtube.com/@sokuler" target="_blank" rel="noopener noreferrer">YouTube</a>
-      и в группе <a href="https://vk.com/sokuler" target="_blank" rel="noopener noreferrer">ВКонтакте</a>.
+      и в группе <a href={SITE.socials.vk.url} target="_blank" rel="noopener noreferrer">ВКонтакте</a>.
     </p>
   </article>
 </Base>

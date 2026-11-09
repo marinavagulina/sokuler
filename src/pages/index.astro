@@ -3,7 +3,7 @@ import Base from '../layouts/Base.astro';
 import { SITE } from '../config';
 
 // schema.org JSON-LD: визитка Person для поисковиков (главная страница).
-// sameAs — ПЛЕЙСХОЛДЕРЫ соцсетей из config.ts, заменить реальными адресами.
+// sameAs — соцсети из config.ts (ВК подтверждён; YouTube пока плейсхолдер).
 const personLd = {
   '@context': 'https://schema.org',
   '@type': 'Person',
@@ -29,7 +29,7 @@ const personLd = {
         <a class="btn btn-primary" href="mailto:info@sokuler.ru">Записаться на занятие</a>
         <a class="btn btn-ghost" href="/koncerty/">Концерты</a>
       </div>
-      <p class="subscribe">Вопросы и запись — <a href="mailto:info@sokuler.ru">почта</a> · <a href="https://vk.com/sokuler" target="_blank" rel="noopener noreferrer">ВКонтакте</a></p>
+      <p class="subscribe">Вопросы и запись — <a href="mailto:info@sokuler.ru">почта</a> · <a href={SITE.socials.vk.url} target="_blank" rel="noopener noreferrer">ВКонтакте</a></p>
     </div>
     <div class="frame-wrap">
       <figure class="frame">
