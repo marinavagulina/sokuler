@@ -1,5 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
+import ReviewCard from '../components/ReviewCard.astro';
+import { REVIEWS, PROFI_RATING, PROFI_URL } from '../data/reviews';
 import { SITE } from '../config';
 
 // schema.org JSON-LD: Service — обучение бас-гитаре и контрабасу.
@@ -24,7 +26,7 @@ const serviceLd = {
       description="Уроки бас-гитары и контрабаса в Москве у м. Сокольники: педагог с 2004 года, рок, поп, фанк, джаз, подготовка в училища и вузы. Запишитесь на занятие!">
   <script type="application/ld+json" is:inline set:html={JSON.stringify(serviceLd)} />
   <article class="teach">
-    <p class="overline">Ученикам</p>
+    <p class="overline">ученикам</p>
     <h1>Занятия бас-гитарой <span class="amp script">и</span> контрабасом</h1>
     <p class="lead">
       Приглашаю на занятия как начинающих басистов, так и тех, кто хочет
@@ -56,7 +58,7 @@ const serviceLd = {
           Помогу подобрать инструмент и отстроить его.</p>
         </div>
         <figure class="photo-card">
-          <img src="/img/foto-obuchenie.jpg" alt="Сергей Сокулер за бас-гитарой на занятии" width="1500" height="1194" />
+          <img src="/img/foto-obuchenie.jpg" alt="Сергей Сокулер с бас-гитарой на концерте, рядом микрофон и пюпитр" width="1500" height="1194" />
         </figure>
       </div>
     </section>
@@ -64,7 +66,7 @@ const serviceLd = {
     <section id="rezultat" class="block">
       <h2>Что вы получите</h2>
       <ul class="get">
-        <li>качественное звукоизвлечение — то, что сразу отличает профи от новичка;</li>
+        <li>качественное звукоизвлечение — то, что сразу отличает опытного басиста от начинающего;</li>
         <li>ритмичность: танцевальное ощущение музыки, то, что мы называем словом «грув»;</li>
         <li>навыки стрессоустойчивости — уверенность во время игры;</li>
         <li>видение грифа и чтение нот с листа;</li>
@@ -117,43 +119,12 @@ const serviceLd = {
     <section id="otzyvy" class="block">
       <h2>Отзывы учеников</h2>
       <div class="reviews">
-        <figure class="review">
-          <blockquote>
-            <p>Я очень доволен. Все объясняется понятно. Показывается предельно ясно.
-            Ошибки указываются корректно. Сергей — практикующий профессиональный
-            музыкант, поэтому обучение идёт в разрезе того, что нужно басисту
-            в 21 веке. Сергей задаёт много, и пока ты не отработаешь сам как надо,
-            тебя будет мучать тем, что есть. В общем и целом — рекомендую.</p>
-          </blockquote>
-          <figcaption><b>Александр</b> · бас-гитара · февраль 2024</figcaption>
-        </figure>
-        <figure class="review">
-          <blockquote>
-            <p>Очень приятные впечатления о преподавателе. С первого занятия
-            заряжаешься желанием заниматься. Занятия интересные. Получил полезные
-            консультации по подбору инструмента.</p>
-          </blockquote>
-          <figcaption><b>Максим</b> · контрабас · сентябрь 2023</figcaption>
-        </figure>
-        <figure class="review">
-          <blockquote>
-            <p>Очень индивидуальный подход. Сергей может всё, поэтому даст вам то,
-            что вам нужно, вполне мастерски. Хотите гаммы, сольфеджио, техники
-            и мастерство — пожалуйста. Хотите красивую партию к понравившейся
-            песне — получите (плюс немного упражнений для тренировки техники
-            для этой песни… вы же хотите играть её кайфово, да же?). Очень
-            профессиональный педагог, который поможет вам достичь ваших целей.</p>
-          </blockquote>
-          <figcaption><b>Татьяна</b> · бас-гитара · февраль 2023</figcaption>
-        </figure>
-        <figure class="review">
-          <blockquote>
-            <p>Положительное и приятное общение. Индивидуальный подход к ученику.</p>
-          </blockquote>
-          <figcaption><b>Денис</b> · бас-гитара · ноябрь 2022</figcaption>
-        </figure>
+        {REVIEWS.map((review) => <ReviewCard review={review} />)}
       </div>
-      <p class="note">Отзывы — с <a href="https://profi.ru/profile/SokulerSV/" target="_blank" rel="noopener noreferrer">profi.ru</a>, оценка профиля — ★5,0.</p>
+      <p class="note">
+        Отзывы — с <a href={PROFI_URL} target="_blank" rel="noopener noreferrer">Профи.ру</a>,
+        оценка профиля — ★{PROFI_RATING}.
+      </p>
     </section>
 
     <div class="cta">
@@ -224,16 +195,9 @@ const serviceLd = {
   .org li { font-size: 15px; line-height: 1.7; color: #453D52; padding-left: 20px; position: relative; margin-bottom: 10px; }
   .org li::before { content: '—'; position: absolute; left: 0; color: var(--bronze); }
 
-  /* отзывы */
-  .reviews { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
-  .review {
-    border: 1px solid var(--line); background: rgba(255,255,255,.55);
-    padding: 24px 22px; display: flex; flex-direction: column; gap: 14px;
-  }
-  .review blockquote { margin: 0; }
-  .review p { font-size: 14px; line-height: 1.75; color: #453D52; }
-  .review figcaption { font-size: 12px; letter-spacing: .08em; color: #8A7F98; margin-top: auto; }
-  .review figcaption b { color: var(--bronze); font-weight: 600; }
+  /* отзывы (карточки — в ReviewCard.astro); align-items: stretch — карточки
+     в ряд одной высоты, подпись прижата к низу (margin-top:auto в компоненте) */
+  .reviews { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; align-items: stretch; }
   .note { margin-top: 14px; font-size: 12px; color: #8A7F98; }
   .note a { color: #8A7F98; text-decoration: underline; }
   .note a:hover { color: var(--bronze); }
