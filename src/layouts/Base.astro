@@ -4,24 +4,65 @@ import '../styles/base.css';
 import { ClientRouter } from 'astro:transitions';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { SITE } from '../config';
 
 interface Props {
   title: string;
   description?: string;
   /** Тема страницы: dark (первый экран, сцена) | light (текстовые страницы) */
   theme?: 'dark' | 'light';
+  /** Заголовок для соцсетей (og:title, twitter:title). По умолчанию — title */
+  ogTitle?: string;
+  /** Описание для соцсетей (og:description, twitter:description). По умолчанию — description */
+  ogDescription?: string;
+  /** Картинка для соцсетей (og:image, twitter:image) — путь от корня сайта. По умолчанию — /img/foto-hero.jpg */
+  ogImage?: string;
 }
-const { title, description = 'Бас-гитарист и контрабасист. Обучение, концерты, записи.', theme = 'light' } = Astro.props;
+const {
+  title,
+  description = 'Бас-гитарист и контрабасист. Обучение, концерты, записи.',
+  theme = 'light',
+  ogTitle = title,
+  ogDescription = description,
+  ogImage = '/img/foto-hero.jpg',
+} = Astro.props;
+
+// canonical — путь страницы + домен из config (ПЛЕЙСХОЛДЕР, см. SITE.url в src/config.ts).
+// Хвостовой слэш приводим к единому виду — так же строит адреса sitemap.
+const path = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`;
+const canonicalURL = new URL(path, SITE.url).href;
+// og:image должен быть абсолютным URL
+const ogImageURL = new URL(ogImage, SITE.url).href;
 ---
 <!DOCTYPE html>
 <html lang="ru">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
     <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={canonicalURL} />
     <meta name="generator" content={Astro.generator} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <title>{title}</title>
+
+    <!-- Open Graph / шаринг в соцсетях -->
+    <!-- ПЛЕЙСХОЛДЕР og:image: foto-hero.jpg вертикальная (1500×2301); желательно горизонтальный кроп ~1200×630 -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:locale" content="ru_RU" />
+    <meta property="og:title" content={ogTitle} />
+    <meta property="og:description" content={ogDescription} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={ogImageURL} />
+    <meta property="og:image:alt" content="Сергей Сокулер с контрабасом" />
+
+    <!-- Twitter/X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={ogTitle} />
+    <meta name="twitter:description" content={ogDescription} />
+    <meta name="twitter:image" content={ogImageURL} />
+
     <ClientRouter />
   </head>
   <body data-theme={theme}>

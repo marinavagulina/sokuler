@@ -1,10 +1,14 @@
 /**
  * Конфиг сайта. Меняется в одном месте — применяется на всех страницах.
  * ПЛЕЙСХОЛДЕРЫ (email, соцсети) — уточнить у Сергея перед публикацией.
+ * Домен sokuler.ru подтверждён Мариной 09.11.2026.
+ * Используется для canonical/og:url (Base.astro), JSON-LD; должен совпадать
+ * с site в astro.config.mjs и ссылкой Sitemap в public/robots.txt.
  */
 export const SITE = {
   name: 'Сергей Сокулер',
   role: 'бас-гитара · контрабас · педагог',
+  url: 'https://sokuler.ru',
   /** ПЛЕЙСХОЛДЕР — реальный адрес уточнить у Сергея */
   email: 'info@sokuler.ru',
   socials: {
