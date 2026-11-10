@@ -9,16 +9,20 @@ export const SITE = {
   name: 'Сергей Сокулер',
   role: 'бас-гитара · контрабас · педагог',
   url: 'https://sokuler.ru',
-  /** ПЛЕЙСХОЛДЕР — реальный адрес уточнить у Сергея */
-  email: 'info@sokuler.ru',
+  /** ПЛЕЙСХОЛДЕР → подтверждён Сергеем 10.11.2026: subwoofer2@yandex.ru */
+  email: 'subwoofer2@yandex.ru',
   socials: {
     vk: {
       url: 'https://vk.ru/id180725233',
       display: 'Басист Сергей Сокулер',
     },
     youtube: {
-      url: 'https://youtube.com/@sokuler', // ПЛЕЙСХОЛДЕР
+      url: 'https://youtube.com/@sokuler', // ПЛЕЙСХОЛДЕР — канал будет наполняться
       display: 'Басист Сергей Сокулер',
+    },
+    telegram: {
+      url: 'https://t.me/soo_cooler82', // подтверждён Сергеем 10.11.2026
+      display: '@soo_cooler82',
     },
   },
 } as const;

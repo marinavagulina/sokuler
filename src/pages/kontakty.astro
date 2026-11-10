@@ -14,7 +14,7 @@ const contactLd = {
     '@type': 'Person',
     name: 'Сергей Сокулер',
     jobTitle: 'Бас-гитарист, контрабасист, педагог',
-    sameAs: [SITE.socials.vk.url, SITE.socials.youtube.url], // ВК реальный; YouTube — плейсхолдер
+    sameAs: [SITE.socials.vk.url, SITE.socials.telegram.url, SITE.socials.youtube.url], // ВК и ТГ реальны; YouTube — плейсхолдер
   },
 };
 ---
@@ -25,8 +25,8 @@ const contactLd = {
     <p class="overline">контакты</p>
     <h1>Связаться <span class="amp script">со</span> мной</h1>
     <p class="lead">
-      Запись на занятия, вопросы по обучению, приглашения на концерты
-      и студийную работу — пишите, отвечаю сам.
+      Вопросы по обучению, приглашения на концерты и студийную запись —
+      пишите в удобном канале, отвечаю сам.
     </p>
 
     <div class="rows">
@@ -35,17 +35,19 @@ const contactLd = {
         <p class="big">
           <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
         </p>
-        <p class="muted">Запись на занятие и все вопросы — самый быстрый канал.</p>
+        <p class="muted">Для писем: концерты, студия, сотрудничество.</p>
       </section>
 
       <section class="row">
-        <h2>Соцсети</h2>
+        <h2>Мессенджеры и соцсети</h2>
         <p class="big">
+          <a href={SITE.socials.telegram.url} target="_blank" rel="noopener noreferrer">Telegram</a>
+          <span class="sep">·</span>
           <a href={SITE.socials.vk.url} target="_blank" rel="noopener noreferrer">ВКонтакте</a>
           <span class="sep">·</span>
           <a href={SITE.socials.youtube.url} target="_blank" rel="noopener noreferrer">YouTube</a>
         </p>
-        <p class="muted">Ищите одинаково: «{SITE.socials.vk.display}» — и в ВК, и на YouTube.</p>
+        <p class="muted">Самый быстрый ответ — в Telegram. Видео и посты — в ВК.</p>
       </section>
 
       <section class="row">

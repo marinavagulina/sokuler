@@ -1,5 +1,4 @@
-# robots.txt — сайт Сергея Сокулера
-# ПЛЕЙСХОЛДЕР ДОМЕНА: заменить https://sokuler.ru на реальный при деплое
+# robots.txt — сайт Сергея Сокулера (sokuler.ru)
 
 User-agent: *
 Allow: /
