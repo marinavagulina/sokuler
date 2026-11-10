@@ -33,6 +33,9 @@ const path = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.ur
 const canonicalURL = new URL(path, SITE.url).href;
 // og:image должен быть абсолютным URL
 const ogImageURL = new URL(ogImage, SITE.url).href;
+// Яндекс.Метрика: номер счётчика задаётся в config.ts (SITE.metrikaId).
+// Пока 0 — скрипт не подключается (локальная разработка без счётчика).
+const metrikaId = Number(SITE.metrikaId ?? 0);
 ---
 <!DOCTYPE html>
 <html lang="ru">
@@ -64,6 +67,31 @@ const ogImageURL = new URL(ogImage, SITE.url).href;
     <meta name="twitter:image" content={ogImageURL} />
 
     <ClientRouter />
+
+    <!-- Яндекс.Метрика: визиты, источники трафика, вебвизор.
+         Подключается только когда SITE.metrikaId задан (не 0).
+         ClientRouter делает переходы без перезагрузки — хиты шлём
+         вручную на astro:page-load (и при первой загрузке тоже). -->
+    {metrikaId > 0 && (
+      <script is:inline define:vars={{ metrikaId }}>
+        (function (m, e, t, r, i, k, a) {
+          m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments) };
+          m[i].l = 1 * new Date();
+          for (var j = 0; j < e.scripts.length; j++) { if (e.scripts[j].src === r) { return; } }
+          k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+        })(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+        ym(metrikaId, "init", { clickmap: true, trackLinks: true, accurateTrackBounce: true, webvisor: true });
+
+        // хит при первой загрузке и после каждого клиентского перехода
+        const sendHit = () => ym(metrikaId, "hit", window.location.href);
+        sendHit();
+        document.addEventListener("astro:page-load", sendHit);
+      </script>
+    )}
+    {metrikaId > 0 && (
+      <noscript><div><img src={`https://mc.yandex.ru/watch/${metrikaId}`} style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    )}
   </head>
   <body data-theme={theme}>
     <Header />

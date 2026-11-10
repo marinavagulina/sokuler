@@ -9,6 +9,8 @@ export const SITE = {
   name: 'Сергей Сокулер',
   role: 'бас-гитара · контрабас · педагог',
   url: 'https://sokuler.ru',
+  /** Яндекс.Метрика: номер счётчика (metrika.yandex.ru). 0 = выключена */
+  metrikaId: 114166660,
   /** ПЛЕЙСХОЛДЕР → подтверждён Сергеем 10.11.2026: subwoofer2@yandex.ru */
   email: 'subwoofer2@yandex.ru',
   socials: {
